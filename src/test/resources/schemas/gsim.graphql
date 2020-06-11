@@ -12,9 +12,9 @@ interface Concept {
 #An organized collection of data.
 interface DataSet {
   #The date on which data is effective or valid.
-  dataExistsFromDate: DateTime
+  dataExistsFromDate: _Neo4jDateTime
   #The date on which data is no longer effective or valid.
-  dataExistsUntilDate: DateTime
+  dataExistsUntilDate: _Neo4jDateTime
   #The type of "steady state" for the dataset.
   dataSetState: DataSetStateType!
   #The path (API endpoint, URI, catalog, ..) to the raw dataset.
@@ -51,7 +51,7 @@ interface IdentifiableArtefact {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -59,21 +59,21 @@ interface IdentifiableArtefact {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #An abstract notion that is any organized collection of information.
@@ -93,7 +93,7 @@ interface ProcessOutput {
 #A requirement, request or other notification that will be considered by an organization. A Statistical Need does not necessarily have structure or format - it is a 'raw' need as received by the organization. A Statistical Need may be of a variety of types including Environmental Change or Information Request.
 interface StatisticalNeed {
   #Date created
-  dateCreated: DateTime
+  dateCreated: _Neo4jDateTime
   #Statistical need status
   statisticalNeedStatus: Boolean!
 }
@@ -212,7 +212,7 @@ type AdministrativeRegister implements ExchangeChannel & IdentifiableArtefact & 
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #Direction of the exchange channel
@@ -222,7 +222,7 @@ type AdministrativeRegister implements ExchangeChannel & IdentifiableArtefact & 
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   producesInformationSets: [producesInformationSets] @link
@@ -232,15 +232,15 @@ type AdministrativeRegister implements ExchangeChannel & IdentifiableArtefact & 
   #An identifier for the supplier of the Administrative Register
   supplierIdentifier: String!
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #An actor that performs a role in relation to the statistical Business Process.
@@ -258,7 +258,7 @@ type Agent implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -268,22 +268,22 @@ type Agent implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   parentAgents: [Agent] @link
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A generic and expandable key-value-store for adding present and future AgentDetails-attributes to the Agent-object.
@@ -306,7 +306,7 @@ type AgentInRole implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -314,22 +314,22 @@ type AgentInRole implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   role: Role! @link
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The result of the analysis of the quality and effectiveness of any activity undertaken by a statistical organization and recommendations on how these can be improved.
@@ -343,9 +343,9 @@ type Assessment implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #Date assessed
-  datesAssessed: [DateTime!]!
+  datesAssessed: [_Neo4jDateTime!]!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -355,7 +355,7 @@ type Assessment implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #Recommendations
@@ -366,15 +366,15 @@ type Assessment implements IdentifiableArtefact @domain {
   shortName: String
   statisticalNeeds: [statisticalNeeds] @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A proposal for a body of work that will deliver outputs designed to achieve outcomes. A Business Case will provide the reasoning for undertaking a Statistical Support Program to initiate a new Statistical Program Design for an existing Statistical Program, or an entirely new Statistical Program, as well as the details of the change proposed.
@@ -392,13 +392,13 @@ type BusinessCase implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #Date approved
-  dateApproved: DateTime
+  dateApproved: _Neo4jDateTime
   #Date implementation commenced
-  dateImplementationCommenced: DateTime
+  dateImplementationCommenced: _Neo4jDateTime
   #Date initiated
-  dateInitiated: DateTime
+  dateInitiated: _Neo4jDateTime
   #The deliverable of the business case
   deliverable: [MultilingualText!]!
   #The description of the information object
@@ -408,7 +408,7 @@ type BusinessCase implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #The objective of the business case
@@ -419,15 +419,15 @@ type BusinessCase implements IdentifiableArtefact @domain {
   statisticalPrograms: [StatisticalProgram] @link
   statisticalSupportPrograms: [StatisticalSupportProgram] @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #Something an enterprise does, or needs to do, in order to achieve its objectives.
@@ -441,7 +441,7 @@ type BusinessFunction implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -449,21 +449,21 @@ type BusinessFunction implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The set of Process Steps to perform one of more Business Functions to deliver a Statistical Program Cycle or Statistical Support Program.
@@ -479,7 +479,7 @@ type BusinessProcess implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -489,7 +489,7 @@ type BusinessProcess implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   parentBusinessProcess: BusinessProcess @link
@@ -498,15 +498,15 @@ type BusinessProcess implements IdentifiableArtefact @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A means of performing a Business Function (an ability that an organization possesses, typically expressed in general and high level terms and requiring a combination of organization, people, processes and technology to achieve).
@@ -520,7 +520,7 @@ type BusinessService implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -528,7 +528,7 @@ type BusinessService implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #Specifies where the service can be accessed.
   location: [MultilingualText!]
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
@@ -538,15 +538,15 @@ type BusinessService implements IdentifiableArtefact @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A structured, well-defined specification for a proposed change.
@@ -560,7 +560,7 @@ type ChangeDefinition implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -568,22 +568,22 @@ type ChangeDefinition implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   populations: [Population] @link
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A subset of classifications
@@ -599,7 +599,7 @@ type ClassificationSubset implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -607,21 +607,21 @@ type ClassificationSubset implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A concrete and usable tool to gather information from the Internet.
@@ -636,7 +636,7 @@ type DataHarvesting implements ExchangeChannel & IdentifiableArtefact & exchange
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #Method for harvesting data
   dataHarvestingType: DataHarvestingType!
   #The description of the information object
@@ -648,7 +648,7 @@ type DataHarvesting implements ExchangeChannel & IdentifiableArtefact & exchange
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   producesInformationSets: [producesInformationSets] @link
@@ -656,15 +656,15 @@ type DataHarvesting implements ExchangeChannel & IdentifiableArtefact & exchange
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #An organized collection of stored information made of one or more Data Sets.
@@ -678,7 +678,7 @@ type DataResource implements IdentifiableArtefact & InformationResource @domain 
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   dataResourceType: DataResourceType
   dataSets: [dataSets] @link
   #The description of the information object
@@ -688,7 +688,7 @@ type DataResource implements IdentifiableArtefact & InformationResource @domain 
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   owner: owner! @link
@@ -696,15 +696,15 @@ type DataResource implements IdentifiableArtefact & InformationResource @domain 
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A Value Domain defined by an expression.
@@ -718,7 +718,7 @@ type DescribedValueDomain implements IdentifiableArtefact & ValueDomain & sentin
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The data type for a value domain
   dataType: DataType!
   #The description of the information object
@@ -728,7 +728,7 @@ type DescribedValueDomain implements IdentifiableArtefact & ValueDomain & sentin
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A Value Domain defined by an expression.
   maxDecimals: Float
   #A Value Domain defined by an expression.
@@ -747,15 +747,15 @@ type DescribedValueDomain implements IdentifiableArtefact & ValueDomain & sentin
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A collection of dimensional data that conforms to a known structure.
@@ -769,11 +769,11 @@ type DimensionalDataSet implements DataSet & IdentifiableArtefact & consumesInfo
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The date on which data is effective or valid.
-  dataExistsFromDate: DateTime
+  dataExistsFromDate: _Neo4jDateTime
   #The date on which data is no longer effective or valid.
-  dataExistsUntilDate: DateTime
+  dataExistsUntilDate: _Neo4jDateTime
   #The type of "steady state" for the dataset.
   dataSetState: DataSetStateType!
   #The path (API endpoint, URI, catalog, ..) to the raw dataset.
@@ -786,7 +786,7 @@ type DimensionalDataSet implements DataSet & IdentifiableArtefact & consumesInfo
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #The path (API endpoint, URI, catalog, ..) to the metadata describing the raw dataset.
   metadataSourcePath: String
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
@@ -796,9 +796,9 @@ type DimensionalDataSet implements DataSet & IdentifiableArtefact & consumesInfo
   #Dataset temporality
   temporalityType: TemporalityType
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Classification of the value or damage potential of a dataset
   valuation: ValuationType
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
@@ -806,7 +806,7 @@ type DimensionalDataSet implements DataSet & IdentifiableArtefact & consumesInfo
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #Describes the structure of a Dimensional Data Set.
@@ -820,7 +820,7 @@ type DimensionalDataStructure implements DataStructure & IdentifiableArtefact & 
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -829,21 +829,21 @@ type DimensionalDataStructure implements DataStructure & IdentifiableArtefact & 
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A Value Domain expressed as a list of Categories and associated Codes.
@@ -857,7 +857,7 @@ type EnumeratedValueDomain implements IdentifiableArtefact & ValueDomain & senti
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The data type for a value domain
   dataType: DataType!
   #The description of the information object
@@ -869,22 +869,22 @@ type EnumeratedValueDomain implements IdentifiableArtefact & ValueDomain & senti
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   measurementUnit: MeasurementUnit @link
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A requirement for change  that originates from a change in the operating environment of the statistical organization.
@@ -900,9 +900,9 @@ type EnvironmentChange implements IdentifiableArtefact & StatisticalNeed & stati
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #Date created
-  dateCreated: DateTime
+  dateCreated: _Neo4jDateTime
   #The description of the information object
   description: [MultilingualText!]
   #Environment change type.
@@ -912,7 +912,7 @@ type EnvironmentChange implements IdentifiableArtefact & StatisticalNeed & stati
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #Legal change
   legalChange: String
   #Method change
@@ -928,15 +928,15 @@ type EnvironmentChange implements IdentifiableArtefact & StatisticalNeed & stati
   #Statistical need status
   statisticalNeedStatus: Boolean!
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #An outline of a need for new information required for a particular purpose.
@@ -952,11 +952,11 @@ type InformationRequest implements IdentifiableArtefact & StatisticalNeed & stat
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #Date created
-  dateCreated: DateTime
+  dateCreated: _Neo4jDateTime
   #Date Information Required
-  dateInformationRequired: DateTime
+  dateInformationRequired: _Neo4jDateTime
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -964,7 +964,7 @@ type InformationRequest implements IdentifiableArtefact & StatisticalNeed & stat
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
@@ -973,15 +973,15 @@ type InformationRequest implements IdentifiableArtefact & StatisticalNeed & stat
   statisticalNeedStatus: Boolean!
   subjectFields: [SubjectField] @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #Organized collections of statistical content.
@@ -999,7 +999,7 @@ type InstanceVariable implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #For INDENTIFIER-components or MEASURE-components. Specifies the type of role --> "entity", "count", "time", "geography" or "identity" (only INDENTIFIER-components).
   dataStructureComponentRole: DataStructureComponentRoleType
   #The data structure component type (identifier, measure or attribute) of the instance variable.
@@ -1019,7 +1019,7 @@ type InstanceVariable implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #Is the variable mandatory or not
   mandatory: Boolean
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
@@ -1032,15 +1032,15 @@ type InstanceVariable implements IdentifiableArtefact @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #This reflects that there could be a structure within the Logical Record and Data Structure, for example several fields can together represent a structured field (e.g. an address), or the record can be structured as in the case of an XML file conformant to a schema. Another example is the relationship between attributes (source, quality, ..) and measures.
@@ -1054,7 +1054,7 @@ type InstanceVariableRelationship implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1062,7 +1062,7 @@ type InstanceVariableRelationship implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #The type of relation
@@ -1074,15 +1074,15 @@ type InstanceVariableRelationship implements IdentifiableArtefact @domain {
   #The relation target instance variables (components), e.g. "address"
   targetComponents: [InstanceVariable]! @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #Describes a type of Unit Data Record for one Unit Type within a Unit Data Set.
@@ -1096,7 +1096,7 @@ type LogicalRecord implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1107,7 +1107,7 @@ type LogicalRecord implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #Describes the multiplicity of this LogicalRecord when a link to parentLogicalRecord exists.
@@ -1117,15 +1117,15 @@ type LogicalRecord implements IdentifiableArtefact @domain {
   shortName: String
   unitType: UnitType! @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #Mapping elements from external Raw Data Object Store to Input Data (InstanceVariable).
@@ -1135,16 +1135,16 @@ type MappingRawDataToInputData {
   #Created or updated by.
   lastUpdatedBy: String
   #The date on which the object was created or updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #The name of the raw data source-element/field/variable (e.g. streetName or streetNumber)
   sourceName: String!
   #Path to the raw data source-element/field/variable (e.g. Xpath /person/address/)
   sourcePath: String!
   targetInstanceVariable: InstanceVariable! @link
   #The date on which the mapping is effective or valid. Set this date only once (constant).
-  validFrom: DateTime
+  validFrom: _Neo4jDateTime
   #The date on which the mapping is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
 }
 
 #The Measurement Type defines the type of a measure e.g. mass or currency. The Measurement Type groups all Measurement Units, which can be converted into each other. A Measurement Type can have a standard Measurement Unit, which can be used for conversion between different Measurement Units.
@@ -1158,7 +1158,7 @@ type MeasurementType implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1166,21 +1166,21 @@ type MeasurementType implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A Measurement Unit is the metric for a measurement in terms of an official unit of measurement.
@@ -1198,7 +1198,7 @@ type MeasurementUnit implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1206,22 +1206,22 @@ type MeasurementUnit implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   measurementType: MeasurementType @link
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A reusable type for supporting multilingual texts.
@@ -1243,7 +1243,7 @@ type OutputSpecification implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1251,7 +1251,7 @@ type OutputSpecification implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   presentations: [Presentation] @link
@@ -1259,15 +1259,15 @@ type OutputSpecification implements IdentifiableArtefact @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #Inputs used to specify which configuration should be used for a specific Process Step which has been designed to be configurable.
@@ -1281,7 +1281,7 @@ type ParameterInput implements IdentifiableArtefact & ProcessInput @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1289,7 +1289,7 @@ type ParameterInput implements IdentifiableArtefact & ProcessInput @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #The datatype of the parameter input
@@ -1301,15 +1301,15 @@ type ParameterInput implements IdentifiableArtefact & ProcessInput @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The total membership of a defined class of people, objects or events.
@@ -1323,7 +1323,7 @@ type Population implements Concept & IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The geographical area to which the population is associated.
@@ -1333,7 +1333,7 @@ type Population implements Concept & IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #Link to national concepts catalog
@@ -1342,23 +1342,23 @@ type Population implements Concept & IdentifiableArtefact @domain {
   #The type og pupulation.
   populationType: PopulationType!
   #The time period to which the population is associated.
-  referencePeriodEndDate: DateTime!
+  referencePeriodEndDate: _Neo4jDateTime!
   #The time period to which the population is associated.
-  referencePeriodStartDate: DateTime!
+  referencePeriodStartDate: _Neo4jDateTime!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   subjectFields: [SubjectField] @link
   universes: [Universe]! @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The way data and referential metadata are presented in a Product.
@@ -1372,7 +1372,7 @@ type Presentation implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1381,7 +1381,7 @@ type Presentation implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #Format of the presentation type
@@ -1391,15 +1391,15 @@ type Presentation implements IdentifiableArtefact @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A set of decision points which determine the flow between the Process Steps used to perform a Business Process.
@@ -1413,7 +1413,7 @@ type ProcessControl implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1421,7 +1421,7 @@ type ProcessControl implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #Success or error, typically using a coded value.
@@ -1431,15 +1431,15 @@ type ProcessControl implements IdentifiableArtefact @domain {
   #The event which triggered the control.
   startEvent: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The specification of the decision points required during the execution of a Business Process.
@@ -1453,7 +1453,7 @@ type ProcessControlDesign implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1461,7 +1461,7 @@ type ProcessControlDesign implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   processControl: ProcessControl! @link
@@ -1469,15 +1469,15 @@ type ProcessControlDesign implements IdentifiableArtefact @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The specification of how a Process Step will be performed. This includes specifying the types of Process Inputs required and the type of Process Outputs that will be produced.
@@ -1493,7 +1493,7 @@ type ProcessDesign implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1501,7 +1501,7 @@ type ProcessDesign implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   processControlDesign: ProcessControlDesign! @link
@@ -1513,15 +1513,15 @@ type ProcessDesign implements IdentifiableArtefact @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The Process Execution Log captures the output of a Process Step which is not directly related to the Transformed Output it produced. It may include data that was recorded during the real time execution of the Process Step.
@@ -1535,17 +1535,17 @@ type ProcessExecutionLog implements IdentifiableArtefact & ProcessOutput @domain
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The time the Process Step ended
-  endTime: DateTime
+  endTime: _Neo4jDateTime
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
   id: String!
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #The code for the event that occurred during the process execution.
   logCode: String
   #The human readable message for the event that occurred during the process execution.
@@ -1561,17 +1561,17 @@ type ProcessExecutionLog implements IdentifiableArtefact & ProcessOutput @domain
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The time the Process Step started
-  startTime: DateTime
+  startTime: _Neo4jDateTime
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A record of the types of inputs required for a Process Design.
@@ -1585,7 +1585,7 @@ type ProcessInputSpecification implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1593,7 +1593,7 @@ type ProcessInputSpecification implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #This denotes the type of object which can be used as an input.
@@ -1601,15 +1601,15 @@ type ProcessInputSpecification implements IdentifiableArtefact @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A specification of the technique which will be used to perform the unit of work.
@@ -1623,7 +1623,7 @@ type ProcessMethod implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1631,22 +1631,22 @@ type ProcessMethod implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   rules: [Rule] @link
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A Process Output whose purpose is to measure and report some aspect of how the Process Step performed during execution.
@@ -1660,7 +1660,7 @@ type ProcessMetric implements IdentifiableArtefact & ProcessOutput @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1668,21 +1668,21 @@ type ProcessMetric implements IdentifiableArtefact & ProcessOutput @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A record of the types of outputs required for a Process Design.
@@ -1696,7 +1696,7 @@ type ProcessOutputSpecification implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1704,7 +1704,7 @@ type ProcessOutputSpecification implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #This denotes the type of object which can be used as an output.
@@ -1712,15 +1712,15 @@ type ProcessOutputSpecification implements IdentifiableArtefact @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A nominated set of Process  Designs, and associated Process Control Designs (flow), which have been highlighted for possible reuse.
@@ -1734,7 +1734,7 @@ type ProcessPattern implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1742,21 +1742,21 @@ type ProcessPattern implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A Process Step is a work package that performs a Business Process. A Process Step implements the Process Step Design specified in order to produce the outputs for which the Process Step was designed.
@@ -1772,7 +1772,7 @@ type ProcessStep implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1782,7 +1782,7 @@ type ProcessStep implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   parentProcessStep: ProcessStep @link
@@ -1793,15 +1793,15 @@ type ProcessStep implements IdentifiableArtefact @domain {
   #ID or URI of technical implementation
   technicalPackageID: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A key-value-store for adding a complex array of code block attributes to the ProcessStep-object.
@@ -1828,7 +1828,7 @@ type ProcessStepInstance implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1836,7 +1836,7 @@ type ProcessStepInstance implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   parameterInputs: [ParameterInput] @link
@@ -1850,15 +1850,15 @@ type ProcessStepInstance implements IdentifiableArtefact @domain {
   transformableInputs: [TransformableInput] @link
   transformedOutputs: [TransformedOutput] @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A form of Process Input that influences the work performed by the Process Step, and therefore influences its outcome.
@@ -1872,7 +1872,7 @@ type ProcessSupportInput implements IdentifiableArtefact & ProcessInput @domain 
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1880,7 +1880,7 @@ type ProcessSupportInput implements IdentifiableArtefact & ProcessInput @domain 
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #The datatype of the ProcessSupportInput
@@ -1892,15 +1892,15 @@ type ProcessSupportInput implements IdentifiableArtefact & ProcessInput @domain 
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A package of content that can be disseminated as a whole.
@@ -1915,7 +1915,7 @@ type Product implements ExchangeChannel & IdentifiableArtefact & exchangeChannel
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #Direction of the exchange channel
@@ -1925,7 +1925,7 @@ type Product implements ExchangeChannel & IdentifiableArtefact & exchangeChannel
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   presentations: [Presentation]! @link
@@ -1934,15 +1934,15 @@ type Product implements ExchangeChannel & IdentifiableArtefact & exchangeChannel
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The mechanism for exchanging information through an Exchange Channel.
@@ -1956,7 +1956,7 @@ type Protocol implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -1964,7 +1964,7 @@ type Protocol implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #Type of protocol.
@@ -1972,15 +1972,15 @@ type Protocol implements IdentifiableArtefact @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The legal or other basis by which two parties agree to exchange data.
@@ -1997,7 +1997,7 @@ type ProvisionAgreement implements IdentifiableArtefact & owner @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   exchangeChannels: [exchangeChannels] @link
@@ -2012,7 +2012,7 @@ type ProvisionAgreement implements IdentifiableArtefact & owner @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #Provision agreement status
@@ -2022,15 +2022,15 @@ type ProvisionAgreement implements IdentifiableArtefact & owner @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 type Query {
@@ -2114,7 +2114,7 @@ type Questionnaire implements ExchangeChannel & IdentifiableArtefact & exchangeC
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #Direction of the exchange channel
@@ -2124,7 +2124,7 @@ type Questionnaire implements ExchangeChannel & IdentifiableArtefact & exchangeC
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   producesInformationSets: [producesInformationSets] @link
@@ -2132,15 +2132,15 @@ type Questionnaire implements ExchangeChannel & IdentifiableArtefact & exchangeC
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #An URN with rank property
@@ -2162,7 +2162,7 @@ type RepresentedVariable implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -2170,7 +2170,7 @@ type RepresentedVariable implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
@@ -2178,16 +2178,16 @@ type RepresentedVariable implements IdentifiableArtefact @domain {
   substantiveValueDomain: substantiveValueDomain @link
   universe: Universe! @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   variable: Variable! @link
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The responsible function involved in the statistical Business Process.
@@ -2201,7 +2201,7 @@ type Role implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -2209,21 +2209,21 @@ type Role implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A specific mathematical or logical expression which can be evaluated to determine specific behavior.
@@ -2241,7 +2241,7 @@ type Rule implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The expression of the rule that is evaluated.
@@ -2253,7 +2253,7 @@ type Rule implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A type taken from a controlled vocabulary.
@@ -2261,15 +2261,15 @@ type Rule implements IdentifiableArtefact @domain {
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A set of activities, which may be repeated, to investigate characteristics of a given Population. It describes the purpose and context of a set of Business Process within the context of the relevant Statistical Program Cycles.
@@ -2285,11 +2285,11 @@ type StatisticalProgram implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #Last date of validity
-  dateEnded: DateTime
+  dateEnded: _Neo4jDateTime
   #First date of validity
-  dateInitiated: DateTime
+  dateInitiated: _Neo4jDateTime
   #The description of the information object
   description: [MultilingualText!]
   #A description of the precursors of the program within the organisation
@@ -2299,7 +2299,7 @@ type StatisticalProgram implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #Description of the legal framework
   legalFrameworks: [MultilingualText!]
   #Any legislative materials, eg parliamentary tabling documents
@@ -2318,15 +2318,15 @@ type StatisticalProgram implements IdentifiableArtefact @domain {
   #A description of the subject matters
   subjectMatterDomains: [MultilingualText!]!
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A set of activities to investigate characteristics of a given Population for a particular reference period.
@@ -2341,7 +2341,7 @@ type StatisticalProgramCycle implements IdentifiableArtefact & owner @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -2349,25 +2349,25 @@ type StatisticalProgramCycle implements IdentifiableArtefact & owner @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #Last date of validity
-  referencePeriodEnd: DateTime!
+  referencePeriodEnd: _Neo4jDateTime!
   #First date of validity
-  referencePeriodStart: DateTime!
+  referencePeriodStart: _Neo4jDateTime!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The specification of the resources required, processes used and description of relevant methodological information about the set of activities undertaken to investigate characteristics of a given Population.
@@ -2385,11 +2385,11 @@ type StatisticalProgramDesign implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #Last date of validity
-  dateEnded: DateTime
+  dateEnded: _Neo4jDateTime
   #First date of validity
-  dateInitiated: DateTime
+  dateInitiated: _Neo4jDateTime
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -2397,7 +2397,7 @@ type StatisticalProgramDesign implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   processDesigns: [ProcessDesign] @link
@@ -2407,15 +2407,15 @@ type StatisticalProgramDesign implements IdentifiableArtefact @domain {
   #The current condition of the program design
   statisticalProgramDesignStatus: StatisticalProgramDesignStatusType!
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A program which is not related to the post-design cyclic production of statistical products, but is necessary to support cyclical production.
@@ -2431,11 +2431,11 @@ type StatisticalSupportProgram implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #Last date of validity
-  dateEnded: DateTime
+  dateEnded: _Neo4jDateTime
   #Initiated date
-  dateInitiated: DateTime
+  dateInitiated: _Neo4jDateTime
   #The description of the information object
   description: [MultilingualText!]
   #A description of the precursors of the program within the organisation
@@ -2445,7 +2445,7 @@ type StatisticalSupportProgram implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
@@ -2459,15 +2459,15 @@ type StatisticalSupportProgram implements IdentifiableArtefact @domain {
   #A description of the subject matters
   subjectMatterDomain: [MultilingualText!]
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #One or more Concept Systems used for the grouping of Concepts and Categories for the production of statistics.
@@ -2481,7 +2481,7 @@ type SubjectField implements IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -2489,21 +2489,21 @@ type SubjectField implements IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A type of Process Input whose content goes into a Process Step and is changed in some way by the execution of that Process Step. Some or all of the content will be represented in the Transformed Output.
@@ -2517,7 +2517,7 @@ type TransformableInput implements IdentifiableArtefact & ProcessInput @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -2528,21 +2528,21 @@ type TransformableInput implements IdentifiableArtefact & ProcessInput @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A Process Output (a result) which provides the reason for existence for the Process Step.
@@ -2556,7 +2556,7 @@ type TransformedOutput implements IdentifiableArtefact & ProcessOutput @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -2564,22 +2564,22 @@ type TransformedOutput implements IdentifiableArtefact & ProcessOutput @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   outputId: outputId! @link
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A collection of data that conforms to a known structure and describes aspects of one or more Units.
@@ -2593,11 +2593,11 @@ type UnitDataSet implements DataSet & IdentifiableArtefact & consumesInformation
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The date on which data is effective or valid.
-  dataExistsFromDate: DateTime
+  dataExistsFromDate: _Neo4jDateTime
   #The date on which data is no longer effective or valid.
-  dataExistsUntilDate: DateTime
+  dataExistsUntilDate: _Neo4jDateTime
   #The type of "steady state" for the dataset.
   dataSetState: DataSetStateType!
   #The path (API endpoint, URI, catalog, ..) to the raw dataset.
@@ -2609,7 +2609,7 @@ type UnitDataSet implements DataSet & IdentifiableArtefact & consumesInformation
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #The path (API endpoint, URI, catalog, ..) to the metadata describing the raw dataset.
   metadataSourcePath: String
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
@@ -2620,9 +2620,9 @@ type UnitDataSet implements DataSet & IdentifiableArtefact & consumesInformation
   temporalityType: TemporalityType
   unitDataStructure: UnitDataStructure! @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Classification of the value or damage potential of a dataset
   valuation: ValuationType
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
@@ -2630,7 +2630,7 @@ type UnitDataSet implements DataSet & IdentifiableArtefact & consumesInformation
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #Describes the structure of a Unit Data Set.
@@ -2644,7 +2644,7 @@ type UnitDataStructure implements DataStructure & IdentifiableArtefact & agreedD
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -2652,22 +2652,22 @@ type UnitDataStructure implements DataStructure & IdentifiableArtefact & agreedD
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   logicalRecords: [LogicalRecord]! @link
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A Unit Type is a class of objects of interest
@@ -2681,7 +2681,7 @@ type UnitType implements Concept & IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -2689,7 +2689,7 @@ type UnitType implements Concept & IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #Link to national concepts catalog
@@ -2701,15 +2701,15 @@ type UnitType implements Concept & IdentifiableArtefact @domain {
   #Type of unit.
   typeOfStatisticalUnit: TypeOfStatisticalUnitType!
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #A defined class of people, entities, events, or objects, with no specification of time and geography, contextualizing a Unit Type.
@@ -2723,7 +2723,7 @@ type Universe implements Concept & IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -2731,7 +2731,7 @@ type Universe implements Concept & IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #Link to national concepts catalog
@@ -2741,15 +2741,15 @@ type Universe implements Concept & IdentifiableArtefact @domain {
   subjectFields: [SubjectField] @link
   unitTypes: [UnitType]! @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 #The use of a Concept as a characteristic of a Population intended to be measured.
@@ -2763,7 +2763,7 @@ type Variable implements Concept & IdentifiableArtefact @domain {
   #Information object created by.
   createdBy: String!
   #The date on which the information object was created
-  createdDate: DateTime!
+  createdDate: _Neo4jDateTime!
   #The description of the information object
   description: [MultilingualText!]
   #The global unique identifier (GUID) of the information object assigned by the owner agency.
@@ -2771,7 +2771,7 @@ type Variable implements Concept & IdentifiableArtefact @domain {
   #Last updated by.
   lastUpdatedBy: String
   #The date on which the object was last updated.
-  lastUpdatedDate: DateTime
+  lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
   name: [MultilingualText!]!
   #Link to national concepts catalog
@@ -2781,15 +2781,15 @@ type Variable implements Concept & IdentifiableArtefact @domain {
   subjectFields: [SubjectField] @link
   unitType: UnitType! @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
-  validFrom: DateTime!
+  validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
-  validUntil: DateTime
+  validUntil: _Neo4jDateTime
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
   versionRationale: [MultilingualText!]
   #The date on which the current version of the infomation object is effective or valid.
-  versionValidFrom: DateTime!
+  versionValidFrom: _Neo4jDateTime!
 }
 
 enum AdministrativeDetailType {
