@@ -1,11 +1,15 @@
 package no.ssb.neo4j.graphql.tbv;
 
+import graphql.schema.GraphQLFieldDefinition;
+import graphql.schema.GraphQLObjectType;
 import graphql.schema.GraphQLSchema;
-import org.neo4j.driver.v1.AuthTokens;
-import org.neo4j.driver.v1.Driver;
-import org.neo4j.driver.v1.GraphDatabase;
-import org.neo4j.driver.v1.Session;
-import org.neo4j.driver.v1.StatementResult;
+import org.neo4j.driver.AuthTokens;
+import org.neo4j.driver.Driver;
+import org.neo4j.driver.GraphDatabase;
+import org.neo4j.driver.Result;
+import org.neo4j.driver.Session;
+import org.neo4j.graphql.Cypher;
+import org.neo4j.graphql.OptimizedQueryException;
 import org.neo4j.graphql.SchemaBuilder;
 import org.neo4j.graphql.Translator;
 import org.slf4j.Logger;
@@ -18,32 +22,67 @@ public class Main {
 
     private static Logger log = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws OptimizedQueryException {
         String sdl = """
                 type Person {
-                  name: ID!
-                  born: Int
+                  id: ID!
+                  name: String
+                  born: _Neo4jDateTime
                   actedIn(ver:Int): [Movie] @cypher(statement: "MATCH (this)-[:REF]->(:R_Movie)-[v:VERSION]->(r:Movie) WHERE v.from <= ver AND coalesce(ver < v.to, true) RETURN r")
                 }
                 type Movie {
-                  title: ID!
+                  id: ID!
+                  title: String
                   released: Int
                   tagline: String
                 }""";
 
-        GraphQLSchema graphQLSchema = SchemaBuilder.buildSchema(sdl, new Translator.Context());
+        GraphQLSchema graphQLSchema = SchemaBuilder.buildSchema(sdl);
+        Translator translator = new Translator(graphQLSchema);
+
         Map<String, ?> params = Map.of("ts", System.currentTimeMillis());
-        List<Translator.Cypher> translatedCypher = new Translator(graphQLSchema).translate("""
+        List<Cypher> translatedCypher = translator.translate("""
                 {
                   person(first:3) {
                     name
-                    born
+                    born {
+                      year
+                      month
+                    }
                     actedIn(first:2, ver:$ts) {
                       title
                     }
                   }
                 }""", params);
 
+        GraphQLObjectType type = graphQLSchema.getQueryType();
+        System.out.printf("%s%n", type.toString());
+        GraphQLFieldDefinition personQuery = type.getFieldDefinition("person");
+        System.out.printf("%s%n", personQuery.toString());
+        personQuery.getDirectives();
+
+        List<Cypher> cypherPersonMutation = translator.translate("""
+                mutation {
+                  createPerson(id: $id, name: $name, born: $born) {
+                    id
+                    name
+                    born {
+                      year,
+                      month
+                    }
+                  }
+                }""", Map.of("id", "ja",
+                "name", "Jane Doe",
+                "born", Map.of("year", 1977, "month", 4))
+        );
+
+        cypherPersonMutation.stream().forEachOrdered(cypher -> {
+            System.out.printf("%s%n", cypher.toString());
+            String c1 = cypher.component1();
+            c1.toString();
+        });
+
+        //if (true) return;
 
         try (Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "PasSW0rd"))) {
 
@@ -61,7 +100,7 @@ public class Main {
 
                 translatedCypher.stream().forEachOrdered(cypher -> {
                     log.info("{}", cypher.toString());
-                    StatementResult result = session.run(cypher.component1(), cypher.component2());
+                    Result result = session.run(cypher.component1(), cypher.component2());
                     result.stream().forEachOrdered(record -> {
                         System.out.printf("%s%n", record);
                     });
