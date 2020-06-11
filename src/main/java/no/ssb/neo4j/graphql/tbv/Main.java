@@ -27,7 +27,8 @@ public class Main {
                 type Person {
                   id: ID!
                   name: String
-                  born: _Neo4jDateTime
+                  address: Address @relation(name:"EMBED")
+                  born: _Neo4jDate
                   actedIn(ver:Int): [Movie] @cypher(statement: "MATCH (this)-[:REF]->(:R_Movie)-[v:VERSION]->(r:Movie) WHERE v.from <= ver AND coalesce(ver < v.to, true) RETURN r")
                 }
                 type Movie {
@@ -35,6 +36,10 @@ public class Main {
                   title: String
                   released: Int
                   tagline: String
+                }
+                type Address {
+                  street: String
+                  city: String
                 }""";
 
         GraphQLSchema graphQLSchema = SchemaBuilder.buildSchema(sdl);
@@ -48,6 +53,10 @@ public class Main {
                     born {
                       year
                       month
+                    }
+                    address {
+                      street
+                      city
                     }
                     actedIn(first:2, ver:$ts) {
                       title
@@ -88,16 +97,19 @@ public class Main {
 
             try (Session session = driver.session()) {
                 session.run("""
-                    MERGE (rp : R_Person {id: 'ne'})
-                    MERGE (p : Person {name: 'Neo'}) ON CREATE SET p.born = 1970
-                    MERGE (rp)-[rpv:VERSION]->(p) ON CREATE SET rpv.from = $from
-                    MERGE (rm : R_Movie {id: 'ma'})
-                    MERGE (m : Movie {title: 'The Matrix'}) ON CREATE SET m.released = '1999', m.tagline = 'Reality is a thing of the past.'
-                    MERGE (rm)-[rmv:VERSION]->(m) ON CREATE SET rmv.from = $from
-                    MERGE (p)-[r:REF]->(rm)""",
+                                MERGE (rp : R_Person {id: 'ne'})
+                                MERGE (p : Person {name: 'Neo'}) ON CREATE SET p.born = date('1970-04-23')
+                                MERGE (p)-[:EMBED]->(pa :Address) ON CREATE SET pa.street = 'first', pa.city = 'NY'
+                                MERGE (rp)-[rpv:VERSION]->(p) ON CREATE SET rpv.from = $from
+                                MERGE (rm : R_Movie {id: 'ma'})
+                                MERGE (m : Movie {title: 'The Matrix'}) ON CREATE SET m.released = '1999', m.tagline = 'Reality is a thing of the past.'
+                                MERGE (rm)-[rmv:VERSION]->(m) ON CREATE SET rmv.from = $from
+                                MERGE (p)-[r:REF]->(rm)""",
                         Map.of("from", System.currentTimeMillis())
                 );
+            }
 
+            try (Session session = driver.session()) {
                 translatedCypher.stream().forEachOrdered(cypher -> {
                     log.info("{}", cypher.toString());
                     Result result = session.run(cypher.component1(), cypher.component2());
