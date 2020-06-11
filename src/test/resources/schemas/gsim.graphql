@@ -109,70 +109,82 @@ interface ValueDomain {
 #Please consider defining your own union types or use an interface type.
 #The list of types are [UnitDataStructure, DimensionalDataStructure].
 #Common suffix: DataStructure.
-union agreedDataStructures = DimensionalDataStructure | UnitDataStructure
+#union agreedDataStructures = DimensionalDataStructure | UnitDataStructure
+interface agreedDataStructures {}
 
 #Automatically generated because of anonymous type in RAML
 #Please consider defining your own union types or use an interface type.
 #The list of types are [UnitDataSet, DimensionalDataSet].
 #Common suffix: DataSet.
-union consumesInformationSets = DimensionalDataSet | UnitDataSet
+#union consumesInformationSets = DimensionalDataSet | UnitDataSet
+interface consumesInformationSets {}
 
 #Automatically generated because of anonymous type in RAML
 #Please consider defining your own union types or use an interface type.
 #The list of types are [UnitDataSet, DimensionalDataSet].
 #Common suffix: DataSet.
-union dataSets = DimensionalDataSet | UnitDataSet
+#union dataSets = DimensionalDataSet | UnitDataSet
+interface dataSets {}
 
 #Automatically generated because of anonymous type in RAML
 #Please consider defining your own union types or use an interface type.
 #The list of types are [Product, AdministrativeRegister, Questionnaire, DataHarvesting].
-union exchangeChannels = AdministrativeRegister | DataHarvesting | Product | Questionnaire
+#union exchangeChannels = AdministrativeRegister | DataHarvesting | Product | Questionnaire
+interface exchangeChannels {}
 
 #Automatically generated because of anonymous type in RAML
 #Please consider defining your own union types or use an interface type.
 #The list of types are [DimensionalDataSet, UnitDataSet].
 #Common suffix: DataSet.
-union informationSetsToPresent = DimensionalDataSet | UnitDataSet
+#union informationSetsToPresent = DimensionalDataSet | UnitDataSet
+interface informationSetsToPresent {}
 
 #Automatically generated because of anonymous type in RAML
 #Please consider defining your own union types or use an interface type.
 #The list of types are [UnitDataSet, DimensionalDataSet].
 #Common suffix: DataSet.
-union inputId = DimensionalDataSet | UnitDataSet
+#union inputId = DimensionalDataSet | UnitDataSet
+interface inputId {}
 
 #Automatically generated because of anonymous type in RAML
 #Please consider defining your own union types or use an interface type.
 #The list of types are [UnitDataSet, DimensionalDataSet].
 #Common suffix: DataSet.
-union outputId = DimensionalDataSet | UnitDataSet
+#union outputId = DimensionalDataSet | UnitDataSet
+interface outputId {}
 
 #Automatically generated because of anonymous type in RAML
 #Please consider defining your own union types or use an interface type.
 #The list of types are [ProvisionAgreement, StatisticalProgram].
-union owner = ProvisionAgreement | StatisticalProgram
+#union owner = ProvisionAgreement | StatisticalProgram
+interface owner {}
 
 #Automatically generated because of anonymous type in RAML
 #Please consider defining your own union types or use an interface type.
 #The list of types are [UnitDataSet, DimensionalDataSet].
 #Common suffix: DataSet.
-union producesInformationSets = DimensionalDataSet | UnitDataSet
+#union producesInformationSets = DimensionalDataSet | UnitDataSet
+interface producesInformationSets {}
 
 #Automatically generated because of anonymous type in RAML
 #Please consider defining your own union types or use an interface type.
 #The list of types are [EnumeratedValueDomain, DescribedValueDomain].
 #Common suffix: edValueDomain.
-union sentinelValueDomain = DescribedValueDomain | EnumeratedValueDomain
+#union sentinelValueDomain = DescribedValueDomain | EnumeratedValueDomain
+interface sentinelValueDomain {}
 
 #Automatically generated because of anonymous type in RAML
 #Please consider defining your own union types or use an interface type.
 #The list of types are [EnvironmentChange, InformationRequest].
-union statisticalNeeds = EnvironmentChange | InformationRequest
+#union statisticalNeeds = EnvironmentChange | InformationRequest
+interface statisticalNeeds {}
 
 #Automatically generated because of anonymous type in RAML
 #Please consider defining your own union types or use an interface type.
 #The list of types are [EnumeratedValueDomain, DescribedValueDomain].
 #Common suffix: edValueDomain.
-union substantiveValueDomain = DescribedValueDomain | EnumeratedValueDomain
+#union substantiveValueDomain = DescribedValueDomain | EnumeratedValueDomain
+interface substantiveValueDomain {}
 
 #Information about the model
 type About {
@@ -189,7 +201,7 @@ type AdministrativeDetails {
 }
 
 #A source of administrative information which is obtained from an external organisation (or sometimes from another department of the same organisation)
-type AdministrativeRegister implements ExchangeChannel & IdentifiableArtefact @domain {
+type AdministrativeRegister implements ExchangeChannel & IdentifiableArtefact & exchangeChannels @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -613,7 +625,7 @@ type ClassificationSubset implements IdentifiableArtefact @domain {
 }
 
 #A concrete and usable tool to gather information from the Internet.
-type DataHarvesting implements ExchangeChannel & IdentifiableArtefact @domain {
+type DataHarvesting implements ExchangeChannel & IdentifiableArtefact & exchangeChannels @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -696,7 +708,7 @@ type DataResource implements IdentifiableArtefact & InformationResource @domain 
 }
 
 #A Value Domain defined by an expression.
-type DescribedValueDomain implements IdentifiableArtefact & ValueDomain @domain {
+type DescribedValueDomain implements IdentifiableArtefact & ValueDomain & sentinelValueDomain & substantiveValueDomain @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -747,7 +759,7 @@ type DescribedValueDomain implements IdentifiableArtefact & ValueDomain @domain 
 }
 
 #A collection of dimensional data that conforms to a known structure.
-type DimensionalDataSet implements DataSet & IdentifiableArtefact @domain {
+type DimensionalDataSet implements DataSet & IdentifiableArtefact & consumesInformationSets & informationSetsToPresent & inputId & outputId & producesInformationSets @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -798,7 +810,7 @@ type DimensionalDataSet implements DataSet & IdentifiableArtefact @domain {
 }
 
 #Describes the structure of a Dimensional Data Set.
-type DimensionalDataStructure implements DataStructure & IdentifiableArtefact @domain {
+type DimensionalDataStructure implements DataStructure & IdentifiableArtefact & agreedDataStructures @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -835,7 +847,7 @@ type DimensionalDataStructure implements DataStructure & IdentifiableArtefact @d
 }
 
 #A Value Domain expressed as a list of Categories and associated Codes.
-type EnumeratedValueDomain implements IdentifiableArtefact & ValueDomain @domain {
+type EnumeratedValueDomain implements IdentifiableArtefact & ValueDomain & sentinelValueDomain & substantiveValueDomain @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -876,7 +888,7 @@ type EnumeratedValueDomain implements IdentifiableArtefact & ValueDomain @domain
 }
 
 #A requirement for change  that originates from a change in the operating environment of the statistical organization.
-type EnvironmentChange implements IdentifiableArtefact & StatisticalNeed @domain {
+type EnvironmentChange implements IdentifiableArtefact & StatisticalNeed & statisticalNeeds @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -928,7 +940,7 @@ type EnvironmentChange implements IdentifiableArtefact & StatisticalNeed @domain
 }
 
 #An outline of a need for new information required for a particular purpose.
-type InformationRequest implements IdentifiableArtefact & StatisticalNeed @domain {
+type InformationRequest implements IdentifiableArtefact & StatisticalNeed & statisticalNeeds @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -1892,7 +1904,7 @@ type ProcessSupportInput implements IdentifiableArtefact & ProcessInput @domain 
 }
 
 #A package of content that can be disseminated as a whole.
-type Product implements ExchangeChannel & IdentifiableArtefact @domain {
+type Product implements ExchangeChannel & IdentifiableArtefact & exchangeChannels @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -1972,7 +1984,7 @@ type Protocol implements IdentifiableArtefact @domain {
 }
 
 #The legal or other basis by which two parties agree to exchange data.
-type ProvisionAgreement implements IdentifiableArtefact @domain {
+type ProvisionAgreement implements IdentifiableArtefact & owner @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -2091,7 +2103,7 @@ type Query {
 }
 
 #A concrete and usable tool to elicit information from observation units.
-type Questionnaire implements ExchangeChannel & IdentifiableArtefact @domain {
+type Questionnaire implements ExchangeChannel & IdentifiableArtefact & exchangeChannels @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -2318,7 +2330,7 @@ type StatisticalProgram implements IdentifiableArtefact @domain {
 }
 
 #A set of activities to investigate characteristics of a given Population for a particular reference period.
-type StatisticalProgramCycle implements IdentifiableArtefact @domain {
+type StatisticalProgramCycle implements IdentifiableArtefact & owner @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -2571,7 +2583,7 @@ type TransformedOutput implements IdentifiableArtefact & ProcessOutput @domain {
 }
 
 #A collection of data that conforms to a known structure and describes aspects of one or more Units.
-type UnitDataSet implements DataSet & IdentifiableArtefact @domain {
+type UnitDataSet implements DataSet & IdentifiableArtefact & consumesInformationSets & informationSetsToPresent & inputId & outputId & producesInformationSets @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
@@ -2622,7 +2634,7 @@ type UnitDataSet implements DataSet & IdentifiableArtefact @domain {
 }
 
 #Describes the structure of a Unit Data Set.
-type UnitDataStructure implements DataStructure & IdentifiableArtefact @domain {
+type UnitDataStructure implements DataStructure & IdentifiableArtefact & agreedDataStructures @domain {
   #Administrative details (e.g. default language, documentation, localID, ...).
   administrativeDetails: [AdministrativeDetails!]
   #Indicator for access to an item.
