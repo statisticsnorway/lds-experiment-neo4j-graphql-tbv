@@ -17,6 +17,7 @@
         <module.build.sourceEncoding>UTF-8</module.build.sourceEncoding>
         <maven.javadoc.skip>true</maven.javadoc.skip>
 
+        <graalvm.version>20.1.0</graalvm.version>
         <slf4j.version>1.7.30</slf4j.version>
         <logback.version>1.2.3</logback.version>
     </properties>
@@ -68,6 +69,38 @@
             <artifactId>neo4j-java-driver</artifactId>
             <version>4.0.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.graalvm.sdk</groupId>
+            <artifactId>graal-sdk</artifactId>
+            <version>${graalvm.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.js</groupId>
+            <artifactId>js</artifactId>
+            <version>${graalvm.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.js</groupId>
+            <artifactId>js-scriptengine</artifactId>
+            <version>${graalvm.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.tools</groupId>
+            <artifactId>profiler</artifactId>
+            <version>${graalvm.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.tools</groupId>
+            <artifactId>chromeinspector</artifactId>
+            <version>${graalvm.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
