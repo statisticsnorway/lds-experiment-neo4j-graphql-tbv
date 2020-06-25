@@ -2172,16 +2172,16 @@ type RepresentedVariable implements IdentifiableArtefact @domain {
   #The date on which the object was last updated.
   lastUpdatedDate: _Neo4jDateTime
   #A term which designates a concept, in this case an information object. The identifying name will be the preferred designation. There will be many terms to designate the same information object, such as synonyms and terms in other languages.
-  name: [MultilingualText!]!
+  name: [MultilingualText!]! @relation(name: "EMBEDS_NAME")
   #A short technical name. (Avoid special characters not supported as variable names in common programming languages).
   shortName: String
-  substantiveValueDomain: substantiveValueDomain @link
+  substantiveValueDomain(ver:Int): substantiveValueDomain @link @cypher(statement: "MATCH (this)-[:REF]->(:R_substantiveValueDomain)-[v:VERSION]->(r:substantiveValueDomain) WHERE v.from <= ver AND coalesce(ver < v.to, true) RETURN r")
   universe: Universe! @link
   #The date on which the information object is effective or valid. Set this date only once (constant). The same date for all versions of this information object.
   validFrom: _Neo4jDateTime!
   #The date on which the information object is no longer effective or valid.
   validUntil: _Neo4jDateTime
-  variable: Variable! @link
+  variable(ver:Int): Variable! @link @cypher(statement: "MATCH (this)-[:REF]->(:R_Variable)-[v:VERSION]->(r:Variable) WHERE v.from <= ver AND coalesce(ver < v.to, true) RETURN r")
   #Formal versioning of the information object. The version designator of the information object assigned by the owner agency. "major.minor.patch", e.g. "1.12.5".
   version: String
   #The reason for making this version of the information object.
