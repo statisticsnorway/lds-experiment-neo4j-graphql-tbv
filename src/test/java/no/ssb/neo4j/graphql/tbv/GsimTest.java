@@ -25,9 +25,25 @@ public class GsimTest {
         Map<String, ?> params = Map.of();
         List<Cypher> translatedCypher = translator.translate("""
                 {
-                  representedVariable(first:3) {
+                  representedVariable(first:10) {
                     shortName
+                    name {
+                      languageCode
+                      languageText
+                    }
                     id
+                    substantiveValueDomain(ver: 12345) {
+                      __typename
+                      ... on DescribedValueDomain {
+                        shortName
+                      }
+                      ... on EnumeratedValueDomain {
+                        shortName
+                      }
+                    }
+                    variable(first: 11, ver: 12345) {
+                      shortName
+                    }
                   }
                 }""", params);
 
