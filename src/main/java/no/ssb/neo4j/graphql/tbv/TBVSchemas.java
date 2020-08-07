@@ -69,7 +69,9 @@ public class TBVSchemas {
                         targetType = ((TypeName) field.getType()).getName();
                     }
 
-                    String tbvResolutionCypher = String.format("MATCH (this)-[:REF]->(:%s_R)-[v:VERSION]->(n:%s) WHERE v.from <= ver AND coalesce(ver < v.to, true) RETURN n", targetType, targetType);
+                    String relationName = ((StringValue) field.getDirective("relation").getArgument("name").getValue()).getValue();
+
+                    String tbvResolutionCypher = String.format("MATCH (this)-[:%s]->(:%s_R)-[v:VERSION]->(n:%s) WHERE v.from <= datetime(ver) AND coalesce(datetime(ver) < v.to, true) RETURN n", relationName, targetType, targetType);
 
                     FieldDefinition transformedField = field.transform(builder -> builder
                             .directives(field.getDirectives()
@@ -88,7 +90,7 @@ public class TBVSchemas {
                                     .collect(Collectors.toList()))
                             .inputValueDefinitions(List.of(InputValueDefinition.newInputValueDefinition()
                                     .name("ver")
-                                    .type(new TypeName("Int"))
+                                    .type(new TypeName("String"))
                                     .build()))
                     );
                     transformedFields.put(field.getName(), transformedField);
