@@ -80,7 +80,7 @@ public class ExampleRunner {
                     LinkedHashMap<String, Object> params = new LinkedHashMap<>(cypher.component2());
                     params.putIfAbsent("_version", timeBasedVersion);
                     Result result = session.run(cypher.component1(), params);
-                    // result.stream().forEachOrdered(record -> System.out.printf("%s%n", record));
+                    result.stream().forEachOrdered(record -> System.out.printf("%s%n", record));
                     result.consume();
                 });
             } catch (OptimizedQueryException e) {
