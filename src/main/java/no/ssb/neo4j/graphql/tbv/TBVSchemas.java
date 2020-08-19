@@ -2,13 +2,19 @@ package no.ssb.neo4j.graphql.tbv;
 
 import graphql.language.Argument;
 import graphql.language.Directive;
+import graphql.language.EnumTypeDefinition;
 import graphql.language.FieldDefinition;
+import graphql.language.InputObjectTypeDefinition;
 import graphql.language.InputValueDefinition;
+import graphql.language.InterfaceTypeDefinition;
 import graphql.language.ListType;
 import graphql.language.ObjectTypeDefinition;
+import graphql.language.ScalarTypeDefinition;
 import graphql.language.StringValue;
 import graphql.language.Type;
+import graphql.language.TypeDefinition;
 import graphql.language.TypeName;
+import graphql.language.UnionTypeDefinition;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.GraphQLType;
 import graphql.schema.idl.TypeDefinitionRegistry;
@@ -69,9 +75,9 @@ public class TBVSchemas {
                         targetType = ((TypeName) field.getType()).getName();
                     }
 
-                    String relationName = ((StringValue) field.getDirective("relation").getArgument("name").getValue()).getValue();
+                    String relationName = field.getName();
 
-                    String tbvResolutionCypher = String.format("MATCH (this)-[:%s]->(:%s_R)-[v:VERSION]->(n:%s) WHERE v.from <= datetime(ver) AND coalesce(datetime(ver) < v.to, true) RETURN n", relationName, targetType, targetType);
+                    String tbvResolutionCypher = String.format("MATCH (this)-[:%s]->(:%s_R:RESOURCE)<-[v:INSTANCE_OF]-(n:%s:INSTANCE) WHERE v.from <= datetime(ver) AND coalesce(datetime(ver) < v.to, true) RETURN n", relationName, targetType, targetType);
 
                     FieldDefinition transformedField = field.transform(builder -> builder
                             .directives(field.getDirectives()
@@ -94,6 +100,39 @@ public class TBVSchemas {
                                     .build()))
                     );
                     transformedFields.put(field.getName(), transformedField);
+                } else {
+                    TypeDefinition typeDefinition = typeDefinitionRegistry.getType(field.getType()).get();
+                    if (typeDefinition instanceof ScalarTypeDefinition) {
+                    } else if (typeDefinition instanceof EnumTypeDefinition) {
+                    } else if (typeDefinition instanceof ObjectTypeDefinition) {
+                        FieldDefinition transformedField = field.transform(builder -> builder.directive(Directive.newDirective()
+                                .name("relation")
+                                .arguments(List.of(Argument.newArgument()
+                                        .name("name")
+                                        .value(StringValue.newStringValue()
+                                                .value(field.getName())
+                                                .build())
+                                        .build()))
+                                .build()
+                        ));
+                        transformedFields.put(field.getName(), transformedField);
+                    } else if (typeDefinition instanceof InterfaceTypeDefinition) {
+                        FieldDefinition transformedField = field.transform(builder -> builder.directive(Directive.newDirective()
+                                .name("relation")
+                                .arguments(List.of(Argument.newArgument()
+                                        .name("name")
+                                        .value(StringValue.newStringValue()
+                                                .value(field.getName())
+                                                .build())
+                                        .build()))
+                                .build()
+                        ));
+                        transformedFields.put(field.getName(), transformedField);
+                    } else if (typeDefinition instanceof UnionTypeDefinition) {
+                    } else if (typeDefinition instanceof InputObjectTypeDefinition) {
+                    } else {
+                        throw new UnsupportedOperationException("Unknown concrete TypeDefinition class: " + typeDefinition.getClass().getName());
+                    }
                 }
             });
 
@@ -133,12 +172,12 @@ public class TBVSchemas {
                             String type = dataFetchingEnvironment.getFieldDefinition().getType().getChildren().get(0).getName();
                             int indexOfReturnClause = cypher.component1().lastIndexOf("WITH " + name + " RETURN");
                             StringBuilder sb = new StringBuilder();
-                            sb.append("MERGE (r :").append(type).append("_R {id: $id}) WITH r\n");
-                            sb.append("OPTIONAL MATCH (r)-[v:VERSION {from: $_version}]->(m)-[:Embed*]->(e) DETACH DELETE m, e WITH r\n");
-                            sb.append("OPTIONAL MATCH (r)-[v:VERSION]->() WHERE v.from <= $_version AND coalesce($_version < v.to, true) WITH r, v AS prevVersion\n");
-                            sb.append("OPTIONAL MATCH (r)-[v:VERSION]->() WHERE v.from > $_version WITH r, prevVersion, min(v.from) AS nextVersionFrom\n");
+                            sb.append("MERGE (r :RESOURCE:").append(type).append("_R {id: $id}) WITH r\n");
+                            sb.append("OPTIONAL MATCH (r)<-[v:VERSION_OF {from: $_version}]-(m)-[*]->(e:EMBEDDED) DETACH DELETE m, e WITH r\n");
+                            sb.append("OPTIONAL MATCH (r)<-[v:VERSION_OF]-() WHERE v.from <= $_version AND coalesce($_version < v.to, true) WITH r, v AS prevVersion\n");
+                            sb.append("OPTIONAL MATCH (r)<-[v:VERSION_OF]-() WHERE v.from > $_version WITH r, prevVersion, min(v.from) AS nextVersionFrom\n");
                             sb.append(cypher.component1(), 0, indexOfReturnClause).append("\n");
-                            sb.append("CREATE (r)-[v:VERSION {from: $_version, to: coalesce(prevVersion.to, nextVersionFrom)}]->(").append(name).append(")\n");
+                            sb.append("CREATE (r)-[v:VERSION_OF {from: $_version, to: coalesce(prevVersion.to, nextVersionFrom)}]->(").append(name).append(":").append(type).append(":INSTANCE").append(")\n");
                             sb.append("SET prevVersion.to = $_version\n");
                             sb.append(cypher.component1().substring(indexOfReturnClause));
                             return new Cypher(sb.toString(), cypher.component2(), cypher.component3());
@@ -149,7 +188,7 @@ public class TBVSchemas {
                             }
                             String modifiedSourceMatch = cypher.component1();
                             String targetType = ((CreateRelationHandler) dataFetcher).getRelation().getType().getName();
-                            String modifiedTargetMatch = replaceGroup(String.format("MATCH \\([^ :)]+:(%s) \\{ [^ :)}]+: \\$[^ })]+ \\}\\)", targetType), modifiedSourceMatch, 1, targetType + "_R");
+                            String modifiedTargetMatch = replaceGroup(String.format("MATCH \\([^ :)]+:(%s) \\{ [^ :)}]+: \\$[^ })]+ \\}\\)", targetType), modifiedSourceMatch, 1, "RESOURCE:" + targetType + "_R");
                             NavigableSet<String> keys = new TreeSet<>(cypher.component2().keySet());
                             NavigableSet<String> toKeys = keys.subSet("to", true, "to~", false);
                             if (toKeys.size() >= 1) {
