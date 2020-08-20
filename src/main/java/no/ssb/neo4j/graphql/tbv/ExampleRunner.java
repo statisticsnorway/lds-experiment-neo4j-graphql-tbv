@@ -38,14 +38,11 @@ public class ExampleRunner {
 
         System.out.printf("SCHEMA:%n%s%n", serializeSchema(graphQLSchema));
 
-        // System.out.printf("EXECUTE Cypher:%n");
-
         try (Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "PasSW0rd"))) {
 
             ZonedDateTime nowUtc = ZonedDateTime.now(ZoneOffset.UTC);
 
-            // System.out.printf("NATIVE MUTATIONS:%n");
-            // runNativeCypher(driver, example.nativeMutations());
+            runNativeCypher(driver, example.nativeMutations());
 
             System.out.printf("MUTATIONS:%n");
             translateGraphQLQueryAndRunCypher(driver, nowUtc, example.mutations());
@@ -56,6 +53,10 @@ public class ExampleRunner {
     }
 
     private void runNativeCypher(Driver driver, List<QueryAndParams> nativeQueryAndParams) {
+        if (nativeQueryAndParams.isEmpty()) {
+            return;
+        }
+        System.out.printf("NATIVE CYPHER:%n");
         try (Session session = driver.session()) {
             nativeQueryAndParams.forEach(queryAndParams -> {
                 Result result = session.run(queryAndParams.query, queryAndParams.params);
@@ -66,6 +67,9 @@ public class ExampleRunner {
     }
 
     private void translateGraphQLQueryAndRunCypher(Driver driver, ZonedDateTime nowUtc, List<QueryAndParams> listOfQueryAndParams) {
+        if (listOfQueryAndParams.isEmpty()) {
+            return;
+        }
         try (Session session = driver.session()) {
             translateToCypherAndExecute(translator, nowUtc, session, listOfQueryAndParams);
         }
