@@ -15,6 +15,11 @@ import graphql.language.Type;
 import graphql.language.TypeDefinition;
 import graphql.language.TypeName;
 import graphql.language.UnionTypeDefinition;
+import graphql.schema.GraphQLFieldDefinition;
+import graphql.schema.GraphQLList;
+import graphql.schema.GraphQLNonNull;
+import graphql.schema.GraphQLObjectType;
+import graphql.schema.GraphQLOutputType;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.GraphQLType;
 import graphql.schema.idl.TypeDefinitionRegistry;
@@ -25,6 +30,7 @@ import org.neo4j.graphql.handler.relation.CreateRelationHandler;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
@@ -77,7 +83,7 @@ public class TBVSchemas {
 
                     String relationName = field.getName();
 
-                    String tbvResolutionCypher = String.format("MATCH (this)-[:%s]->(:%s_R:RESOURCE)<-[v:INSTANCE_OF]-(n:%s:INSTANCE) WHERE v.from <= datetime(ver) AND coalesce(datetime(ver) < v.to, true) RETURN n", relationName, targetType, targetType);
+                    String tbvResolutionCypher = String.format("MATCH (this)-[:%s]->(:%s_R:RESOURCE)<-[v:VERSION_OF]-(n:%s:INSTANCE) WHERE v.from <= ver AND coalesce(ver < v.to, true) RETURN n", relationName, targetType, targetType);
 
                     FieldDefinition transformedField = field.transform(builder -> builder
                             .directives(field.getDirectives()
@@ -96,7 +102,7 @@ public class TBVSchemas {
                                     .collect(Collectors.toList()))
                             .inputValueDefinitions(List.of(InputValueDefinition.newInputValueDefinition()
                                     .name("ver")
-                                    .type(new TypeName("String"))
+                                    .type(new TypeName("_Neo4jDateTimeInput"))
                                     .build()))
                     );
                     transformedFields.put(field.getName(), transformedField);
@@ -161,18 +167,37 @@ public class TBVSchemas {
         final Set<String> mutationTypes = new CopyOnWriteArraySet<>();
         final Set<String> queryTypes = new CopyOnWriteArraySet<>();
 
-        GraphQLSchema graphQLSchema = SchemaBuilder.buildSchema(typeDefinitionRegistry,
+        TypeDefinitionRegistry withoutDomainDirectives = new TypeDefinitionRegistry().merge(typeDefinitionRegistry);
+        for (Map.Entry<String, TypeDefinition> typeByName : typeDefinitionRegistry.types().entrySet()) {
+            TypeDefinition typeDefinition = typeByName.getValue();
+            if (typeDefinition instanceof ObjectTypeDefinition) {
+                List<Directive> directives = typeDefinition.getDirectives();
+                if (directives.removeIf(d -> d.getName().equals("domain"))) {
+                    ObjectTypeDefinition transformedTypeDefinition = ((ObjectTypeDefinition) typeDefinition).transform(builder -> builder.directives(directives));
+                    withoutDomainDirectives.remove(typeDefinition);
+                    withoutDomainDirectives.add(transformedTypeDefinition);
+                }
+            }
+        }
+
+        GraphQLSchema graphQLSchema = SchemaBuilder.buildSchema(withoutDomainDirectives,
                 new SchemaConfig(new SchemaConfig.CRUDConfig(true, Collections.emptyList()), new SchemaConfig.CRUDConfig(true, Collections.emptyList())),
                 (dataFetchingEnvironment, dataFetcher) -> {
                     String name = dataFetchingEnvironment.getField().getName();
                     Cypher cypher = dataFetcher.get(dataFetchingEnvironment);
-                    if (mutationTypes.contains(name)) {
+                    if (queryTypes.contains(name)) {
+                        String type = unwrapTypeName(dataFetchingEnvironment.getFieldDefinition().getType());
+                        cypher.toString();
+                        String query = replaceGroup(String.format("MATCH \\(%s:%s\\) WHERE( )", name, type), cypher.component1(), 1, " (_v.from <= $_version AND coalesce($_version < _v.to, true)) AND ");
+                        query = replaceGroup(String.format("MATCH (\\(%s:%s\\)) WHERE", name, type), query, 1, String.format("(_r:%s:RESOURCE)<-[_v:VERSION_OF]-(%s:%s:INSTANCE)", type + "_R", name, type));
+                        return new Cypher(query, cypher.component2(), cypher.component3());
+                    } else if (mutationTypes.contains(name)) {
                         // mutation
                         if (name.startsWith("create")) {
-                            String type = dataFetchingEnvironment.getFieldDefinition().getType().getChildren().get(0).getName();
+                            String type = unwrapTypeName(dataFetchingEnvironment.getFieldDefinition().getType());
                             int indexOfReturnClause = cypher.component1().lastIndexOf("WITH " + name + " RETURN");
                             StringBuilder sb = new StringBuilder();
-                            sb.append("MERGE (r :RESOURCE:").append(type).append("_R {id: $id}) WITH r\n");
+                            sb.append("MERGE (r:").append(type).append("_R:RESOURCE {id: $id}) WITH r\n");
                             sb.append("OPTIONAL MATCH (r)<-[v:VERSION_OF {from: $_version}]-(m)-[*]->(e:EMBEDDED) DETACH DELETE m, e WITH r\n");
                             sb.append("OPTIONAL MATCH (r)<-[v:VERSION_OF]-() WHERE v.from <= $_version AND coalesce($_version < v.to, true) WITH r, v AS prevVersion\n");
                             sb.append("OPTIONAL MATCH (r)<-[v:VERSION_OF]-() WHERE v.from > $_version WITH r, prevVersion, min(v.from) AS nextVersionFrom\n");
@@ -182,18 +207,17 @@ public class TBVSchemas {
                             sb.append(cypher.component1().substring(indexOfReturnClause));
                             return new Cypher(sb.toString(), cypher.component2(), cypher.component3());
                         } else if (name.startsWith("add")) {
-                            String sourceType = dataFetchingEnvironment.getFieldDefinition().getType().getChildren().get(0).getName();
                             if (!(dataFetcher instanceof CreateRelationHandler)) {
                                 throw new IllegalArgumentException("dataFetcher is not an instance of " + CreateRelationHandler.class.getSimpleName());
                             }
                             String modifiedSourceMatch = cypher.component1();
                             String targetType = ((CreateRelationHandler) dataFetcher).getRelation().getType().getName();
-                            String modifiedTargetMatch = replaceGroup(String.format("MATCH \\([^ :)]+:(%s) \\{ [^ :)}]+: \\$[^ })]+ \\}\\)", targetType), modifiedSourceMatch, 1, "RESOURCE:" + targetType + "_R");
+                            String modifiedTargetMatch = replaceGroup(String.format("MATCH \\([^ :)]+:(%s) \\{ [^ :)}]+: \\$[^ })]+ \\}\\)", targetType), modifiedSourceMatch, 1, targetType + "_R:RESOURCE");
                             NavigableSet<String> keys = new TreeSet<>(cypher.component2().keySet());
                             NavigableSet<String> toKeys = keys.subSet("to", true, "to~", false);
                             if (toKeys.size() >= 1) {
                                 String firstToKey = toKeys.first();
-                                String query = replaceGroup(String.format("MATCH \\([^ :)]+:%s( \\{ [^ :)}]+: \\$[^ })]+ \\}\\))", targetType + "_R"), modifiedTargetMatch, 1, String.format(") WHERE to.id IN $%s", firstToKey));
+                                String query = replaceGroup(String.format("MATCH \\([^ :)]+:%s( \\{ [^ :)}]+: \\$[^ })]+ \\}\\))", targetType + "_R:RESOURCE"), modifiedTargetMatch, 1, String.format(") WHERE to.id IN $%s", firstToKey));
                                 return new Cypher(query, cypher.component2(), cypher.component3());
                             }
                         } else {
@@ -203,12 +227,49 @@ public class TBVSchemas {
                     return cypher;
                 });
 
+        GraphQLObjectType queryType = graphQLSchema.getQueryType();
+        Set<? extends String> originalQueries = queryType.getChildren().stream().map(GraphQLType::getName).collect(Collectors.toSet());
+        GraphQLObjectType transformedQueryObject = graphQLSchema.getQueryType().transform(graphQLObjectTypeBuilder -> {
+            graphQLObjectTypeBuilder.clearFields();
+            for (String originalQuery : originalQueries) {
+                GraphQLFieldDefinition originalFieldDefinition = queryType.getFieldDefinition(originalQuery);
+                String typeName = unwrapTypeName(originalFieldDefinition.getType());
+                TypeDefinition typeDefinition = typeDefinitionRegistry.getType(typeName).get();
+                if (typeDefinition.getDirective("domain") != null) {
+                    graphQLObjectTypeBuilder.field(originalFieldDefinition.transform(fieldDefinitionBuilder -> {
+                    }));
+                }
+            }
+        });
+
+        LinkedHashSet<GraphQLType> newAdditionalTypes = new LinkedHashSet<>(graphQLSchema.getAdditionalTypes());
+        if (newAdditionalTypes.contains(graphQLSchema.getQueryType())) {
+            newAdditionalTypes.remove(graphQLSchema.getQueryType());
+            newAdditionalTypes.add(transformedQueryObject);
+        }
+
+        GraphQLSchema transformedGraphQLSchema = GraphQLSchema.newSchema(graphQLSchema).query(transformedQueryObject).clearAdditionalTypes().additionalTypes(newAdditionalTypes).build();
+
         // set of all query types
-        queryTypes.addAll(graphQLSchema.getQueryType().getChildren().stream().map(GraphQLType::getName).collect(Collectors.toSet()));
+        queryTypes.addAll(transformedGraphQLSchema.getQueryType().getChildren().stream().map(GraphQLType::getName).collect(Collectors.toSet()));
 
         // set of all mutation types
-        mutationTypes.addAll(graphQLSchema.getMutationType().getChildren().stream().map(GraphQLType::getName).collect(Collectors.toSet()));
-        return graphQLSchema;
+        mutationTypes.addAll(transformedGraphQLSchema.getMutationType().getChildren().stream().map(GraphQLType::getName).collect(Collectors.toSet()));
+
+        return transformedGraphQLSchema;
+    }
+
+    private static String unwrapTypeName(GraphQLOutputType type) {
+        if (type instanceof GraphQLNonNull) {
+            return unwrapTypeName((GraphQLOutputType) type.getChildren().get(0));
+        }
+        if (type instanceof GraphQLList) {
+            return unwrapTypeName((GraphQLOutputType) type.getChildren().get(0));
+        }
+        if (type instanceof GraphQLObjectType) {
+            return type.getName();
+        }
+        throw new IllegalArgumentException("Unsupported concrete GraphQLOutputType class: " + type.getClass().getName());
     }
 
     public static String replaceGroup(String regex, String source, int groupToReplace, String replacement) {
