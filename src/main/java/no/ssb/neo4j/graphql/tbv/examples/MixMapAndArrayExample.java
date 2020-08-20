@@ -9,7 +9,7 @@ import java.util.Map;
 public class MixMapAndArrayExample implements Example {
 
     final String SDL = """
-            type MixMapAndArray {
+            type MixMapAndArray @domain {
               id: ID!
               name: Name
               child: [Child]
@@ -23,7 +23,7 @@ public class MixMapAndArrayExample implements Example {
               since: String
               link: Person @link
             }
-            type Person {
+            type Person @domain {
               name: Name
               age: Int
             }
